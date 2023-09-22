@@ -14,12 +14,16 @@ namespace SecuritySystem.Models
         public bool Enter {  get; set; }
         public Person person { get; set; }
 
-        public Security(DateTime date, DateTime hour, bool enter, Person person)
+        public Security(DateTime date, bool enter, Person person)
         {
             this.date = date;
-            this.hour = hour;
             this.Enter = enter;
             this.person = person;
+        }
+        public override string ToString()
+        {
+            return "Id: " + this.Id + " Date: " + this.date.ToString() + " Entry: " + 
+                this.Enter + "\n Person: " + this.person.ToString();
         }
     }
 }

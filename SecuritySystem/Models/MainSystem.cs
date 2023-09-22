@@ -41,20 +41,33 @@ namespace SecuritySystem.Models
 
         public List<Security> GetSecurities(DateTime date, Person person)
         {
-            var listSecuritiesByDate = listSecurity.Where(x => x.date == date).ToList();
+            var listSecuritiesByDate = listSecurity.Where(x => x.date.Date == date.Date).ToList();
             return listSecuritiesByDate.Where(x => x.person.Equals(person)).ToList();
         }
 
-        public bool addSecurity(DateTime date, DateTime hour, bool entry, Person person)
+        public List<Security> GetSecurities()
         {
-            Security security = new Security(date, hour, entry, person);
-            var listSecurityByPerson = GetSecurities(date, person);
-            if(listSecurityByPerson.Count > 0)
+            return listSecurity;
+        }
+
+        public bool addSecurity(DateTime date, bool entry, Person person)
+        {
+            try
             {
-                if(listSecurityByPerson.Any(x => x.hour == hour))
+                Security security = new Security(date, entry, person);
+                var listSecurityByPerson = GetSecurities(date, person);
+                if (listSecurityByPerson.Count > 0)
                 {
-                    //la persona ya ficho
-                    return false;
+                    if (listSecurityByPerson.Any(x => x.date.Hour == date.Hour & x.date.Minute == date.Minute)
+                        || listSecurityByPerson.Any(x => x.Enter.Equals(entry)))
+                    {
+                        throw new Exception("La persona ya ficho");
+                    }
+                    else
+                    {
+                        listSecurity.Add(security);
+                        return true;
+                    }
                 }
                 else
                 {
@@ -62,16 +75,16 @@ namespace SecuritySystem.Models
                     return true;
                 }
             }
-            else
+            catch(Exception e)
             {
-                listSecurity.Add(security);
-                return true;
+                Console.WriteLine(e.Message);
+                return false;
             }
         }
 
         public List<Security> GetSecurities(DateTime date)
         {
-            return listSecurity.Where(x => x.date == date).ToList();
+            return listSecurity.Where(x => x.date.Date == date.Date).ToList();
         }
     }
 }
