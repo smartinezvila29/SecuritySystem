@@ -71,6 +71,10 @@ namespace SecuritySystem.Models
                 }
                 else
                 {
+                    if(person == null)
+                    {
+                        throw new Exception("La persona no existe");
+                    }
                     listSecurity.Add(security);
                     return true;
                 }
