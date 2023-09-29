@@ -15,6 +15,10 @@ namespace SecuritySystem.Models
         {
             int id = 1;
             if (listPeople.Count > 0) { id = listPeople.Count + 1; }
+            if(this.GetPersonByDocument(document) != null)
+            {
+                return false;
+            }
             Employee employee = new Employee(id, surname, name, document, fileNumber);
             listPeople.Add(employee);
             return true;
@@ -24,6 +28,10 @@ namespace SecuritySystem.Models
         {
             int id = 1;
             if (listPeople.Count > 0) { id = listPeople.Count + 1; }
+            if (this.GetPersonByDocument(document) != null)
+            {
+                return false;
+            }
             Visit visit = new Visit(id, surname, name, document, company);
             listPeople.Add(visit);
             return true;
@@ -32,6 +40,11 @@ namespace SecuritySystem.Models
         public Person GetPerson(int id)
         {
             return listPeople.Where(x => x.Id == id).FirstOrDefault();
+        }
+        
+        public Person GetPersonByDocument(int document)
+        {
+            return listPeople.Where(x => x.GetDocument() == document).FirstOrDefault();
         }
 
         public List<Person> GetListPerson()

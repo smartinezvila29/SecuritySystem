@@ -24,5 +24,10 @@ namespace SecuritySystem.Models
             }
             else { return false; }
         }
+
+        public int GetDocument()
+        {
+            return this.Document;
+        }
     }
 }
